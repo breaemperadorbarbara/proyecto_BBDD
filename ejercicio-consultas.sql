@@ -151,27 +151,92 @@ inner join  film_actor fa
 			 on fa.film_id = f.film_id 
 where f.title = 'EGG IGBY';
 
+/** 18. Selecciona todos los nombres de las películas únicos. **/
+
+select 
+	distinct f.title  
+from film f ;
+
+
+/** 19. Encuentra el título de las películas que son comedias y tienen una
+duración mayor a 180 minutos en la tabla “film”. **/
+
+select 
+	f.title as pelicula,
+	c."name" as categoria,
+	f.length as duracion
+from category c
+inner join film_category fc --inner join para unir las tablas category y film_category
+	on c.category_id = fc.category_id 
+		inner join film f  -- inner join para unir las tablas film_category y film
+			on fc.film_id = f.film_id
+where c."name" = 'Comedy' and f.length > 180; -- usamos and para poner dos restricciones
+
+
+/** 20. Encuentra las categorías de películas que tienen un promedio de
+duración superior a 110 minutos y muestra el nombre de la categoría
+junto con el promedio de duración.**/
+
+select 
+	c."name" as categoria,
+	round(AVG(f.length )) as duracion_media 
+from film f  
+inner join film_category fc 
+	 on f.film_id = fc.film_id
+		inner join category c 
+			on fc.category_id = c.category_id 
+group by c."name" 
+having AVG(f.length ) > 110;
+
+
+
+/** 21. ¿Cuál es la media de duración del alquiler de las películas? **/
+
+select round(AVG(f.rental_duration )) as media_alquiler 
+from film f ;
+
+
+/** 22. Crea una columna con el nombre y apellidos de todos los actores y
+actrices. **/
+
+select 
+	concat(a.first_name , ' ', a.last_name ) as nombre_completo
+from actor a ;
+
+
+/** 23. Números de alquiler por día, ordenados por cantidad de alquiler de
+forma descendente. **/
+
+select 
+		count(r.rental_date ) as cantidad_alquiler,
+		r.rental_date::date
+from rental r 
+group by r.rental_date::date
+order by count(r.rental_date ) desc;
 
 
 
 
+/** 24. Encuentra las películas con una duración superior al promedio.**/
+
+select f.title 
+from film f 
+where f.length > (select AVG(f.length ) 
+		from film f );
+
+
+/** 25. Averigua el número de alquileres registrados por mes. **/
+
+select 
+		count(DATE_TRUNC('month', r.rental_date)) as alquileres_por_mes,
+		DATE_TRUNC('month', r.rental_date)::date as mes
+from rental r 
+group by DATE_TRUNC('month', r.rental_date)::date ;
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+/** 26. Encuentra el promedio, la desviación estándar y varianza del total
+pagado. **/
 
 
 
