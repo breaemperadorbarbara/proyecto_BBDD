@@ -238,6 +238,132 @@ group by DATE_TRUNC('month', r.rental_date)::date ;
 /** 26. Encuentra el promedio, la desviación estándar y varianza del total
 pagado. **/
 
+select 
+	AVG(p.amount ) as promedio,
+	stddev(p.amount ) as desviacion_estandar,
+	variance(p.amount ) as varianza
+from payment p ;
+
+
+/** 27. ¿Qué películas se alquilan por encima del precio medio?**/
+
+select f.title 
+from film f 
+where f.rental_rate > 
+		(select AVG(f.rental_rate )
+			from film f );
+
+
+/** 28. Muestra el id de los actores que hayan participado en más de 40
+películas. **/
+
+select 
+	a.actor_id	
+from actor a 
+left join film_actor fa 
+	on a.actor_id = fa.actor_id 
+	where (select count(fa.film_id ) 
+ from film_actor fa 
+	group by fa.film_id ) > 40;
+
+;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
