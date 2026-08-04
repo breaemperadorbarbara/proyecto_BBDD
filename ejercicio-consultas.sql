@@ -582,8 +582,29 @@ películas que se alquilaron después de que la película ‘Spartacus
 Cheaper’ se alquilara por primera vez. Ordena los resultados
 alfabéticamente por apellido. **/
 
-select *
+select 
+	a.first_name as nombre_actor,
+	a.last_name as apellido_actor
 from actor a 
+inner join film_actor fa 
+	on a.actor_id = fa.actor_id 
+inner join film f 
+	on fa.film_id = f.film_id 
+inner join inventory i 
+	on f.film_id = i.film_id
+inner join rental r 
+	on i.inventory_id = r.inventory_id
+where r.rental_date  > (select r2.rental_date 
+							from rental r2
+							inner join inventory i2 
+								on i2.inventory_id = r2.inventory_id 
+							inner join film f2 
+								on i2.film_id = f2.film_id 
+							where title = 'SPARTACUS CHEAPER'
+							order by r2.rental_date 
+							limit 1) 
+order by a.last_name ;
+	
 
 
 
