@@ -465,9 +465,23 @@ where c.name = 'Action';
 
 /** 46. Encuentra todos los actores que no han participado en películas. **/
 
+select a.actor_id 
+from actor a 
+left join film_actor fa 
+	on a.actor_id = fa.actor_id 
+where fa.film_id is null ; 
 
 
+/** 47. Selecciona el nombre de los actores y la cantidad de películas en las
+que han participado.**/
 
+select 	
+	concat(a.first_name , ' ', a.last_name ) as nombre_actor,
+	count(fa.film_id) as numero_peliculas
+from actor a 
+left join film_actor fa 
+	on a.actor_id = fa.actor_id 
+group by a.actor_id ;
 
 
 
