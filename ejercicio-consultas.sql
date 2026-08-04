@@ -507,8 +507,22 @@ inner join film_category fc
 where c."name" = 'Action';
 
 
+/** 51. Crea una tabla temporal llamada “cliente_rentas_temporal” para
+almacenar el total de alquileres por cliente. **/
+
+create temporary table "clientes_rentas_temporal" as
+select 
+	c.customer_id ,
+	count(r.rental_id ) as total_alquileres	
+from customer c  
+left join rental r  
+	on c.customer_id = r.customer_id
+group by c.customer_id 
+order by c.customer_id ;
 
 
+/** 52. Crea una tabla temporal llamada “peliculas_alquiladas” que almacene las
+películas que han sido alquiladas al menos 10 veces.
 
 
 
