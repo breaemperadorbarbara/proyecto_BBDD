@@ -267,10 +267,17 @@ inner join film_actor fa
 
 
 
+ /** 29. Obtener todas las películas y, si están disponibles en el inventario,
+mostrar la cantidad disponible. **/
 
-
-
-
+select 
+	f.film_id ,
+	count(i.store_id ) as cantidad_disponible 
+from film f 
+left join inventory i 
+	on f.film_id = i.film_id 
+group by (f.film_id )
+order by f.film_id ;
 
 
 
