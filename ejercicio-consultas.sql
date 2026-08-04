@@ -280,42 +280,140 @@ group by (f.film_id )
 order by f.film_id ;
 
 
+/** 30. Obtener los actores y el número de películas en las que ha actuado. **/
+
+select 
+	concat(a.first_name , ' ', a.last_name ) as nombre_actor ,
+	count(fa.film_id ) as cantidad_peliculas
+from actor a 
+left join film_actor fa 
+	on a.actor_id = fa.actor_id
+group by a.actor_id  ;
+
+/** 31. Obtener todas las películas y mostrar los actores que han actuado en
+ellas, incluso si algunas películas no tienen actores asociados.**/
+
+select 
+	f.title,
+	concat(a.first_name , ' ', a.last_name ) as nombre_actor 
+from film f 
+left join film_actor fa 
+	on f.film_id = fa.film_id 
+left join actor a 
+	on fa.actor_id = a.actor_id
+order by f.film_id  ;
+
+/** 32. Obtener todos los actores y mostrar las películas en las que han
+actuado, incluso si algunos actores no han actuado en ninguna película.**/
+
+select 
+	f.title,
+	concat(a.first_name , ' ', a.last_name ) as nombre_actor 
+from film f 
+right join film_actor fa 
+	on f.film_id = fa.film_id 
+right join actor a 
+	on fa.actor_id = a.actor_id
+order by a.actor_id ;
+
+select 
+	f.title,
+	concat(a.first_name , ' ', a.last_name ) as nombre_actor 
+from actor a 
+left join film_actor fa 
+	on a.actor_id = fa.actor_id 
+left join film f 
+	on fa.film_id = f.film_id 
+order by a.actor_id ;
 
 
+/** 33. Obtener todas las películas que tenemos y todos los registros de
+alquiler.**/
+
+select 
+	f.title ,	
+	r.customer_id,
+	r.rental_date ,
+	r.return_date 
+from film f 
+left join inventory i 
+	on f.film_id = i.film_id
+left join rental r 
+	on i.inventory_id = r.inventory_id ;
 
 
+/** 34. Encuentra los 5 clientes que más dinero se hayan gastado con nosotros.**/
+
+select 
+	c.customer_id ,
+	sum(p.amount) as cantidad_total
+from customer c 
+inner join payment p 
+	on c.customer_id = p.customer_id
+group by c.customer_id 
+order by cantidad_total  desc 
+limit 5;
+
+/** 35. Selecciona todos los actores cuyo primer nombre es 'Johnny'.**/
+
+select 
+	concat(a.first_name , ' ', a.last_name ) as nombre_actor
+from actor a 
+where a.first_name = 'JOHNNY';
 
 
+/**36. Renombra la columna “first_name” como Nombre y “last_name” como Apellido.**/
+
+select 
+	a.first_name as "Nombre",
+	a.last_name as "Apellido"
+from actor a ;
+
+/** 37. Encuentra el ID del actor más bajo y más alto en la tabla actor. **/
+
+select 
+	MAX(a.actor_id ) as id_max,
+	MIN(a.actor_id ) as id_min
+from actor a; 
 
 
+/** 38. Cuenta cuántos actores hay en la tabla “actor”. **/
+
+select count(a.actor_id ) as numero_actores
+from actor a ;
 
 
+/** 39. Selecciona todos los actores y ordénalos por apellido en orden
+ascendente. **/
+
+select 
+	a.actor_id,
+	a.last_name 
+from actor a 
+order by a.last_name ;
+
+/** Selecciona las primeras 5 películas de la tabla “film”. **/
+
+select *
+from film f 
+order by f.film_id 
+limit 5;
 
 
+/** 41. Agrupa los actores por su nombre y cuenta cuántos actores tienen el
+mismo nombre. ¿Cuál es el nombre más repetido? **/
+
+select 
+	a.first_name ,
+	count(a.first_name) as cantidad_nombre 
+from actor a 
+group by a.first_name 
+order by cantidad_nombre desc
+limit 1; 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+/** 42. Encuentra todos los alquileres y los nombres de los clientes que los
+realizaron. **/
 
 
 
