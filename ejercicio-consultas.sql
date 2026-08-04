@@ -484,9 +484,27 @@ left join film_actor fa
 group by a.actor_id ;
 
 
+/** 49. Calcula el número total de alquileres realizados por cada cliente.**/
+
+select 
+	c.customer_id ,
+	count(r.rental_id ) as total_alquileres	
+from customer c  
+left join rental r  
+	on c.customer_id = r.customer_id
+group by c.customer_id 
+order by c.customer_id ;
 
 
+/** 50. Calcula la duración total de las películas en la categoría 'Action'.**/
 
+select SUM(f.length) as duracion_total
+from film f 
+inner join film_category fc 
+	on f.film_id = fc.film_id 
+		inner join category c 
+			on fc.category_id = c.category_id 
+where c."name" = 'Action';
 
 
 
