@@ -522,18 +522,68 @@ order by c.customer_id ;
 
 
 /** 52. Crea una tabla temporal llamada “peliculas_alquiladas” que almacene las
-películas que han sido alquiladas al menos 10 veces.
+películas que han sido alquiladas al menos 10 veces. **/
 
 
+create temporary table "peliculas_alquiladas" as
+select 
+	f.title ,
+	count(r.rental_id ) as cantidad_alquiler
+from film f 
+inner join inventory i 
+	on f.film_id = i.film_id 
+inner join rental r 
+	on i.inventory_id = r.inventory_id 
+group by f.film_id 
+having count(r.rental_id )>= 10 ;
 
 
+/** 53. Encuentra el título de las películas que han sido alquiladas por el cliente
+con el nombre ‘Tammy Sanders’ y que aún no se han devuelto. Ordena
+los resultados alfabéticamente por título de película. **/
+
+select 
+	f.title,
+	concat(c.first_name , ' ', c.last_name ) as nombre_cliente,
+	r.return_date 
+from film f 
+inner join inventory i 
+	on f.film_id = i.film_id
+inner join rental r 
+	on i.inventory_id = r.inventory_id 
+inner join customer c 
+	on r.customer_id  = c.customer_id 
+where c.first_name = 'TAMMY' and c.last_name = 'SANDERS' and r.return_date is null
+order by f.title;
 
 
+/** 54. Encuentra los nombres de los actores que han actuado en al menos una
+película que pertenece a la categoría ‘Sci-Fi’. Ordena los resultados
+alfabéticamente por apellido. **/
+
+select 
+	concat(a.first_name , ' ', a.last_name ) as nombre_actor,
+	c."name" as categoria
+from actor a 
+inner join film_actor fa 
+	on a.actor_id = fa.actor_id
+inner join film f 
+	on fa.film_id = f.film_id
+inner join film_category fc 
+	on f.film_id = fc.film_id 
+inner join category c 
+	on fc.category_id = c.category_id
+where name = 'Sci-Fi'
+order by a.last_name ;
 
 
+/** 55. Encuentra el nombre y apellido de los actores que han actuado en
+películas que se alquilaron después de que la película ‘Spartacus
+Cheaper’ se alquilara por primera vez. Ordena los resultados
+alfabéticamente por apellido. **/
 
-
-
+select *
+from actor a 
 
 
 
