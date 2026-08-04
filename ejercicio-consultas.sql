@@ -415,26 +415,55 @@ limit 1;
 /** 42. Encuentra todos los alquileres y los nombres de los clientes que los
 realizaron. **/
 
+select 
+	r.rental_id ,
+	c.first_name 
+from rental r 
+left join customer c 
+	on r.customer_id = c.customer_id;
 
 
+/** 43. Muestra todos los clientes y sus alquileres si existen, incluyendo
+aquellos que no tienen alquileres. **/
+
+select 
+	c.customer_id,
+	r.rental_id 
+from customer c 
+left join rental r 
+	on c.customer_id = r.customer_id ;
+
+/** 44. Realiza un CROSS JOIN entre las tablas film y category. ¿Aporta valor
+esta consulta? ¿Por qué? Deja después de la consulta la contestación. **/
+
+select *
+from film f 
+cross join category c;
 
 
+/** no aporta ningún valor ya que mezcla los resgistros de una tabla con otra, en este caso asigna todas las categorias a todas las películas lo que resultaria confuso a la hora de clasificar
+ las paliculas, por eso cada pelicula tiene su propio category_id. al hacer el cross join nos encontramos con 16 resultados de categorias distintas para una misma pelicula**/
 
 
+/** 45. Encuentra los actores que han participado en películas de la categoría
+'Action'. **/
+
+select 
+	a.actor_id ,
+	c."name" 
+from actor a 
+inner  join film_actor fa 
+	on a.actor_id = fa.actor_id 
+inner join film f 
+	on fa.film_id = f.film_id 
+inner join film_category fc 
+	on f.film_id = fc.film_id 
+inner join category c 
+	on fc.category_id = c.category_id
+where c.name = 'Action';
 
 
-
-
-
-
-
-
-
-
-
-
-
-
+/** 46. Encuentra todos los actores que no han participado en películas. **/
 
 
 
