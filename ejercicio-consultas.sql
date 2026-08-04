@@ -260,13 +260,12 @@ películas. **/
 select 
 	a.actor_id	
 from actor a 
-left join film_actor fa 
-	on a.actor_id = fa.actor_id 
-	where (select count(fa.film_id ) 
- from film_actor fa 
-	group by fa.film_id ) > 40;
+inner join film_actor fa 
+	on a.actor_id = fa.actor_id
+	group by a.actor_id 
+	having  (count(fa.film_id)) > 40;
 
-;
+
 
 
 
