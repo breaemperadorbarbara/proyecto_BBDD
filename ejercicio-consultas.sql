@@ -714,14 +714,43 @@ inner join category c
 group by c."name"; 
 
 
+/** 62. Encuentra el número de películas por categoría estrenadas en 2006. **/
+
+select 
+	count(f.film_id ),
+	c."name" as categoria
+from film f 
+inner join film_category fc 
+	on f.film_id = fc.film_id 
+inner join category c 
+	on fc.category_id = c.category_id
+where f.release_year = 2006
+group by c."name" ;
 
 
 
+/** 63. Obtén todas las combinaciones posibles de trabajadores con las tiendas
+que tenemos. **/
+
+select *
+from staff s 
+cross join store s2 ;
 
 
 
+/** 64. Encuentra la cantidad total de películas alquiladas por cada cliente y
+muestra el ID del cliente, su nombre y apellido junto con la cantidad de
+películas alquiladas. **/
 
-
+select 
+	c.customer_id as id_cliente,
+	c.first_name as nombre_cliente,
+	c.last_name as apellido_clienre,
+	count(r.rental_id ) as peliculas_alquiladas
+from customer c 
+left join rental r 
+	on c.customer_id = r.customer_id
+group by c.customer_id ;
 
 
 
