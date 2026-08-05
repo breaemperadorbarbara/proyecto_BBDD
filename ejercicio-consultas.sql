@@ -606,6 +606,115 @@ where r.rental_date  > (select r2.rental_date
 order by a.last_name ;
 	
 
+/** 56. Encuentra el nombre y apellido de los actores que no han actuado en
+ninguna película de la categoría ‘Music’. **/
+
+
+select 
+	a.first_name as nombre_actor,
+	a.last_name as apellido_actor 
+from actor a 
+where a.actor_id not in (select a.actor_id 
+							from actor a 
+							inner join film_actor fa 
+								on a.actor_id = fa.actor_id 
+							inner join film f 
+								on fa.film_id = f.film_id
+							inner join film_category fc 
+								on f.film_id = fc.film_id 
+							inner join category c 
+								on fc.category_id = c.category_id
+							where c."name" = 'Music');
+
+
+/** 57. Encuentra el título de todas las películas que fueron alquiladas por más
+de 8 días. **/
+
+
+select 
+	f.title,
+	r.return_date ::date - r.rental_date ::date as dias_alquiler
+from film f 
+inner join inventory i 
+	on f.film_id = i.film_id
+inner join rental r 
+	on i.inventory_id = r.inventory_id
+where 
+	r.return_date is not null and 		
+	r.return_date ::date - r.rental_date ::date > 8;
+
+
+/** 58. Encuentra el título de todas las películas que son de la misma categoría
+que ‘Animation’. **/
+
+select 
+	f.title,
+	c."name" as categoria
+from film f 
+inner join film_category fc 
+	on f.film_id = fc.film_id 
+inner join category c 
+	on fc.category_id = c.category_id
+where c."name" = 'Animation';
+
+
+
+/** 59. Encuentra los nombres de las películas que tienen la misma duración
+que la película con el título ‘Dancing Fever’. Ordena los resultados
+alfabéticamente por título de película.**/
+
+
+
+select 
+	f.title,
+	f.length 
+from film f 
+where f.length = (select f2.length 
+					from film f2 
+					where f2.title = 'DANCING FEVER')
+	and f.title <> 'DANCING FEVER'
+order by title;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
