@@ -677,8 +677,41 @@ order by title;
 
 
 
+/** 60. Encuentra los nombres de los clientes que han alquilado al menos 7
+películas distintas. Ordena los resultados alfabéticamente por apellido. **/
+
+select 
+	c.first_name as nombre_cli,
+	c.last_name as apellido_cli
+from customer c 
+inner join rental r 
+	on c.customer_id = r.customer_id
+inner join inventory i 
+	on r.inventory_id = i.inventory_id
+inner join film f 
+	on i.film_id = f.film_id
+group by c.customer_id 
+having count(distinct f.film_id )>=7
+order by c.last_name ;
 
 
+/** 61. Encuentra la cantidad total de películas alquiladas por categoría y
+muestra el nombre de la categoría junto con el recuento de alquileres. 
+**/
+
+select 
+	count(r.rental_id  ) as peliculas_alquiladas,
+	c."name" as categoria
+from rental r 
+inner join inventory i 
+	on r.inventory_id = i.inventory_id
+inner join film f 
+	on i.film_id = f.film_id
+inner join film_category fc 
+	on f.film_id = fc.film_id 
+inner join category c 
+	on fc.category_id = c.category_id
+group by c."name"; 
 
 
 
